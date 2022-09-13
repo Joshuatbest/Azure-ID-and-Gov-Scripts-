@@ -1,0 +1,19 @@
+﻿Azure Tag,Description
+Environment,The environment type is defined in the environment classification below.
+,"Example Values: <Stage, DEV, TST, QA, PROD>"
+System,The system criticality is defined in the system classification below.
+,"Example Values: <Critical, Non-critical, N/A>"
+Application Name,The name of the Application that the Azure resource belongs to.
+,Example Values: <add_name_of_app>
+Application Owner,Full Name of the Application Owner
+,"Example Values: <John Wick, Michel Charm, Paul Mickelson,…etc.>"
+Owner Email,The contact email will use to inform about the changes/issues.
+,"Example Values: <abcd@domain.com or abcd@domain.org,…etc>"
+Cost Centre,It will be the Cost Center of the party who might be charged for the consumption.
+,"Example Values: <CC-Id01, CC-Id02,…etc.>Determined by accounting probably "
+Business Area,The name of the Business Area.
+,"Example Values: <Name_of_Business, ITTeam, DBTeam, OperationsTeam, MigrateTeam, TestingTeam,..etc.>"
+Created By,Full Name of the User or User Email who created a Resource in Azure
+,"Example Values: <John Wick, Michel.Charm@domain.com, PaulMickelson@domain.com,…etc.>"
+Data Type,The data type is defined in data asset classification.
+,"Example Values: <Public, Private or Internal, Restricted, Confidential,…etc>"
