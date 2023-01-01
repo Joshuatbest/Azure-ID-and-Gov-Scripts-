@@ -1,0 +1,23 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name and storage account name
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+
+# Get the storage account keys
+$keys = Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName
+
+# Rotate the storage account keys
+Regenerate-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName -KeyType Primary
+Regenerate-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName -KeyType Secondary
+
+# Get the updated storage account keys
+$keys = Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName
+
+# Output the storage account keys
+$keys
+
