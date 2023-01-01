@@ -1,0 +1,31 @@
+# Import the Azure Storage cmdlets
+Import-Module Azure.Storage
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name, storage account name, and container name
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+$containerName = "mycontainer"
+
+# Get the storage account key
+$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName).Value[0]
+
+# Get the storage context
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+
+# Set the Active Directory properties
+$adProperties = New-Object -TypeName Microsoft.WindowsAzure.Commands.Common.Storage.AdHocAccess.AdHocAccessProperties
+$adProperties.AccountKey = $storageAccountKey
+$adProperties.AccountName = $storageAccountName
+$adProperties.BlobEndpoint = $storageContext.BlobEndpoint
+
+# Set the role assignment properties
+$roleAssignmentProperties = New-Object -TypeName Microsoft.WindowsAzure.Commands.Common.Storage.AdHocAccess.RoleAssignmentProperties
+$roleAssignmentProperties.ObjectId = "11111111-1111-1111-1111-111111111111"
+$roleAssignmentProperties.RoleDefinitionName = "Storage Blob Data Contributor"
+
+# Assign the role to the user
+New-AzureStorageContainerAcl -Context $storageContext -Container $containerName -Acl $roleAssignmentProperties -AdHocAccess $adProperties
+
