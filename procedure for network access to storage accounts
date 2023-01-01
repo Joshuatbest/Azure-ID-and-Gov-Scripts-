@@ -1,0 +1,16 @@
+To configure network access to a storage account in Azure, you can follow these steps:
+
+Navigate to the Azure portal and sign in with your Azure account.
+In the left menu, click "All services" and search for "Storage accounts".
+Click on the storage account that you want to configure network access for.
+In the left menu, click "Networking".
+Under "Virtual networks", click the "Add" button.
+Select the virtual network and the subnet that you want to allow access to the storage account.
+Click "OK" to add the virtual network to the storage account.
+(Optional) To allow access from a specific IP address or range, click the "Add" button under "Firewall and virtual networks".
+Enter the IP address or range in the "IP address or range" field.
+Click "OK" to add the IP address or range to the storage account.
+Click "Save" to apply the changes.
+After completing these steps, the virtual network and any IP addresses or ranges that you added will have access to the storage account.
+
+Note that these steps will only allow access to the storage account. To access the individual blobs or files within the storage account, you will also need to configure access controls such as shared access signatures or Azure AD authentication.
