@@ -1,0 +1,15 @@
+# Import the Azure AD PowerShell module
+Import-Module AzureAD
+
+# Connect to your Azure AD tenant
+Connect-AzureAD
+
+# Define the permissions for the custom role
+$permissions = @(
+    "Directory.Read.All",
+    "Directory.AccessAsUser.All"
+)
+
+# Create the custom role
+New-AzureADDirectoryRole -DisplayName "Custom Role" -Description "A custom role with read and access permissions" -IsSystemDefined $false -PermissionsToRoles $permissions
+
