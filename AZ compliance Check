@@ -1,0 +1,25 @@
+# Connect to Azure
+Connect-AzAccount
+
+# Set the subscription ID
+$subscriptionId = "your-subscription-id"
+
+# Get the subscription object
+$subscription = Get-AzSubscription -SubscriptionId $subscriptionId
+
+# Get the compliance status of the subscription
+$complianceStatus = Get-AzPolicyState -SubscriptionId $subscriptionId
+
+# Check if the subscription is compliant
+if ($complianceStatus.IsCompliant) {
+    # The subscription is compliant
+    Write-Output "The subscription is compliant."
+} else {
+    # The subscription is not compliant
+    Write-Output "The subscription is not compliant."
+
+    # Get the non-compliant resources
+    $nonCompliantResources = Get-AzPolicyNonComplianceDetail -SubscriptionId $subscriptionId
+    Write-Output "Non-compliant resources:"
+    $nonCompliantResources | Select-Object ResourceId, ResourceName, ResourceType, PolicyAssignmentName, PolicyDefinitionName | Format-Table
+}
