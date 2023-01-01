@@ -1,0 +1,68 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name and location
+$resourceGroupName = "myResourceGroup"
+$location = "East US"
+
+# Create a new resource group
+New-AzureRmResourceGroup -Name $resourceGroupName -Location $location
+
+# Set the policy definition properties
+$policyDefinition = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PolicyDefinition
+$policyDefinition.Properties = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PolicyProperties
+$policyDefinition.Properties.DisplayName = "Deny resource creation"
+$policyDefinition.Properties.Description = "This policy prevents the creation of new resources."
+$policyDefinition.Properties.PolicyType = "Custom"
+$policyDefinition.Properties.Mode = "All"
+$policyDefinition.Properties.PolicyRule = @"
+{
+  "if": {
+    "not": {
+      "field": "type",
+      "in": "[parameters('allowedTypes')]"
+    }
+  },
+  "then": {
+    "effect": "deny"
+  }
+}
+"@
+$policyDefinition.Properties.Parameters = @"
+{
+  "allowedTypes": {
+    "type": "Array",
+    "metadata": {
+      "description": "The list of resource types that are allowed to be created.",
+      "strongType": "resourceType"
+    }
+  }
+}
+"@
+
+# Create the policy definition
+New-AzureRmPolicyDefinition -PolicyDefinition $policyDefinition
+
+# Set the policy assignment properties
+$policyAssignment = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PolicyAssignment
+$policyAssignment.Properties = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PolicyAssignmentProperties
+$policyAssignment.Properties.DisplayName = "Deny resource creation assignment"
+$policyAssignment.Properties.Scope = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/$resourceGroupName"
+$policyAssignment.Properties.PolicyDefinitionId = (Get-AzureRmPolicyDefinition -Name "Deny resource creation").Properties.PolicyDefinitionId
+$policyAssignment.Properties.Parameters = @"
+{
+  "allowedTypes": {
+    "value": [
+      "Microsoft.Compute/virtualMachines",
+      "Microsoft.Storage/storageAccounts"
+    ]
+  }
+}
+"@
+
+# Create the policy assignment
+New-AzureRmPolicyAssignment -PolicyAssignment $policyAssignment
+
