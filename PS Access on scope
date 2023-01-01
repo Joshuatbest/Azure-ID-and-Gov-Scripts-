@@ -1,0 +1,24 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name and location
+$resourceGroupName = "myResourceGroup"
+$location = "East US"
+
+# Create a new resource group
+New-AzureRmResourceGroup -Name $resourceGroupName -Location $location
+
+# Set the scope and role name
+$subscriptionScope = "/subscriptions/11111111-1111-1111-1111-111111111111"
+$resourceGroupScope = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/$resourceGroupName"
+$roleName = "Reader"
+
+# Assign the role at the subscription scope
+New-AzureRmRoleAssignment -ObjectId "11111111-1111-1111-1111-111111111111" -RoleDefinitionName $roleName -Scope $subscriptionScope
+
+# Assign the role at the resource group scope
+New-AzureRmRoleAssignment -ObjectId "11111111-1111-1111-1111-111111111111" -RoleDefinitionName $roleName -Scope $resourceGroupScope
+
