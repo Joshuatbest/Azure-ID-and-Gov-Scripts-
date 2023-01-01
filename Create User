@@ -1,0 +1,16 @@
+# Import the Azure AD PowerShell module
+Import-Module AzureAD
+
+# Connect to your Azure AD tenant
+Connect-AzureAD
+
+# Set the properties for the new user
+$user = New-Object -TypeName Microsoft.Open.AzureAD.Model.User
+$user.DisplayName = "John Smith"
+$user.UserPrincipalName = "john.smith@contoso.com"
+$user.PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
+$user.PasswordProfile.Password = "P@ssw0rd"
+
+# Create the user in Azure AD
+New-AzureADUser -User $user
+
