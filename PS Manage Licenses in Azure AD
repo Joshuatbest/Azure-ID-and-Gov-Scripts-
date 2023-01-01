@@ -1,0 +1,17 @@
+# Import the Azure AD PowerShell module
+Import-Module AzureAD
+
+# Connect to your Azure AD tenant
+Connect-AzureAD
+
+# Set the user principal name and license plan
+$userPrincipalName = "john.smith@contoso.com"
+$licensePlan = "contoso:ENTERPRISEPACK"
+
+# Get the user and license plan objects
+$user = Get-AzureADUser -Filter "userPrincipalName eq '$userPrincipalName'"
+$license = Get-AzureADSubscribedSku -Filter "skuPartNumber eq '$licensePlan'"
+
+# Assign the license to the user
+Set-AzureADUserLicense -ObjectId $user.ObjectId -AssignedLicenses $license
+
