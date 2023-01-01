@@ -1,0 +1,32 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name and location
+$resourceGroupName = "myResourceGroup"
+$location = "East US"
+
+# Create a new resource group
+New-AzureRmResourceGroup -Name $resourceGroupName -Location $location
+
+# Define the permissions for the custom role
+$permissions = @(
+    @{
+        Actions = @("*");
+        NotActions = @();
+        DataActions = @();
+        NotDataActions = @();
+    }
+)
+
+# Create the custom role definition
+$roleDefinition = New-AzureRmRoleDefinition -Name "CustomRole" -Permissions $permissions
+
+# Set the scope for the custom role
+$scope = "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/$resourceGroupName"
+
+# Create the custom role assignment
+New-AzureRmRoleAssignment -ObjectId "11111111-1111-1111-1111-111111111111" -RoleDefinitionName "CustomRole" -Scope $scope
+
