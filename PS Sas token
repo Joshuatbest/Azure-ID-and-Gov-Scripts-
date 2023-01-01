@@ -1,0 +1,24 @@
+# Import the Azure Storage cmdlets
+Import-Module Azure.Storage
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name, storage account name, and container name
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+$containerName = "mycontainer"
+
+# Get the storage account key
+$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName).Value[0]
+
+# Get the storage context
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+
+# Set the SAS token properties
+$policy = New-AzureStorageContainerSASToken -Name $containerName -Context $storageContext -Permission rwdl -ExpiryTime (Get-Date).AddHours(1)
+
+# Output the SAS token
+$policy
+
+CHATGPT
