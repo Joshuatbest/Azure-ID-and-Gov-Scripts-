@@ -1,0 +1,16 @@
+# Import the Azure AD PowerShell module
+Import-Module AzureAD
+
+# Connect to your Azure AD tenant
+Connect-AzureAD
+
+# Set the properties for the new guest user
+$user = New-Object -TypeName Microsoft.Open.AzureAD.Model.User
+$user.DisplayName = "John Smith"
+$user.UserPrincipalName = "john.smith@contoso.com"
+$user.InvitedUserEmailAddress = "john.smith@contoso.com"
+$user.AccountEnabled = $true
+
+# Create the guest user in Azure AD
+New-AzureADMSInvitation -InvitedUser $user -InviteRedirectUrl "https://myapp.com"
+
