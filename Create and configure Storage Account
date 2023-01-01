@@ -1,0 +1,29 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name, location, and storage account properties
+$resourceGroupName = "myResourceGroup"
+$location = "East US"
+$storageAccountName = "mystorageaccount"
+$storageAccountType = "Standard_LRS"
+
+# Create a new resource group
+New-AzureRmResourceGroup -Name $resourceGroupName -Location $location
+
+# Create the storage account
+New-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -Location $location -Type $storageAccountType
+
+# Set the virtual network and subnet
+$virtualNetworkName = "myVirtualNetwork"
+$subnetName = "mySubnet"
+
+# Get the virtual network and subnet objects
+$virtualNetwork = Get-AzureRmVirtualNetwork -ResourceGroupName $resourceGroupName -Name $virtualNetworkName
+$subnet = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $virtualNetwork -Name $subnetName
+
+# Add the virtual network and subnet to the storage account
+Set-AzureRmStorageAccountNetworkRule -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -VirtualNetworkResourceId $virtualNetwork.Id -SubnetId $subnet.Id
+
