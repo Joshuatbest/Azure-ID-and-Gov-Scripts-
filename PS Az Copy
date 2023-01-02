@@ -1,0 +1,12 @@
+# Set the local folder path, storage account URL, and storage account access key
+$localFolderPath = "C:\myfolder"
+$storageAccountUrl = "https://mystorageaccount.blob.core.windows.net/mycontainer"
+$storageAccountKey = "mystorageaccountkey"
+
+# Set the AzCopy arguments
+$arguments = "/Source:$localFolderPath /Dest:$storageAccountUrl /DestKey:$storageAccountKey /S /Y"
+
+# Run AzCopy and pass the arguments
+Start-Process -FilePath "C:\Program Files (x86)\Microsoft SDKs\Azure\AzCopy\AzCopy.exe" -ArgumentList $arguments -Wait
+
+CHATGPT
