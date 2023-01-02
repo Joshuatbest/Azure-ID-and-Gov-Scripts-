@@ -1,0 +1,14 @@
+# Import the Azure Resource Manager cmdlets
+Import-Module AzureRM
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name and storage account name
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+
+# Enable storage encryption
+Set-AzureRmStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName -EnableBlobEncryption $true
+
+CHATGPT
