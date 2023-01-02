@@ -1,0 +1,36 @@
+# Import the Azure Storage cmdlets
+Import-Module Azure.Storage
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name, storage account name, container name, and SAS token
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+$containerName = "mycontainer"
+$sasToken = "?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2024-01-01T00:00:00Z&st=2019-02-01T00:00:00Z&spr=https&sig=1234567890abcdefghijklmnopqrstuvwxyz1234567890"
+
+# Get the storage context
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccountName -SasToken $sasToken
+
+# Set the import job properties
+$importJobProperties = New-Object -TypeName Microsoft.WindowsAzure.Commands.Common.Storage.AdHocAccess.ImportJobProperties
+$importJobProperties.BlobType = "BlockBlob"
+$importJobProperties.Container = $containerName
+$importJobProperties.DestinationAccountName = $storageAccountName
+$importJobProperties.DestinationContainer = $containerName
+$importJobProperties.DestinationContext = $storageContext
+$importJobProperties.OverwriteOption = "Overwrite"
+
+# Set the import job options
+$importJobOptions = New-Object -TypeName Microsoft.WindowsAzure.Commands.Common.Storage.AdHocAccess.ImportJobOptions
+$importJobOptions.BlockSize = 4194304
+$importJobOptions.NumberOfThreads = 2
+
+# Set the SAS URI for the source data
+$sourceSasUri = "https://mystorageaccount.blob.core.windows.net/import-source/data.vhd"
+
+# Create the import job
+New-AzureStorageImportJob -Properties $importJobProperties -Options $importJobOptions -SourceUri $sourceSasUri
+
+CHATGPT
