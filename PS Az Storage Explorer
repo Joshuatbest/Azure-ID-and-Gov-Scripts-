@@ -1,0 +1,30 @@
+# Import the Azure Storage cmdlets
+Import-Module Azure.Storage
+
+# Connect to your Azure account
+Connect-AzureRmAccount
+
+# Set the resource group name, storage account name, and container name
+$resourceGroupName = "myResourceGroup"
+$storageAccountName = "mystorageaccount"
+$containerName = "mycontainer"
+
+# Get the storage account key
+$storageAccountKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName).Value[0]
+
+# Get the storage context
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+
+# Get the storage account connection string
+$connectionString = $storageContext.ConnectionString
+
+# Connect to the storage account using Azure Storage Explorer
+Connect-ASEAccount -ConnectionString $connectionString
+
+# Set the local file path and destination blob name
+$localFilePath = "C:\myfolder\myfile.txt"
+$destinationBlobName = "myfile.txt"
+
+# Upload the file to the container
+Import-ASEBlob -Container $containerName -File $localFilePath -Destination $destinationBlobName
+
